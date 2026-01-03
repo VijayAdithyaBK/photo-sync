@@ -1,0 +1,7 @@
+{
+  "name": "Photo Sync",
+  "description": "Seamlessly transfer photos from mobile to PC over Wi-Fi using WebRTC.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Photo Sync</title>
+    <link rel="icon" type="image/svg+xml" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="10" y="25" width="80" height="55" rx="10" fill="%23F9F5F1" stroke="%232D2D2D" stroke-width="6"/><circle cx="50" cy="52.5" r="18" fill="%23C84C4C" stroke="%232D2D2D" stroke-width="6"/><rect x="60" y="15" width="20" height="10" rx="2" fill="%232D2D2D"/></svg>' />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;500;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              cream: '#F9F5F1',
+              'retro-red': '#C84C4C',
+              'retro-green': '#4F7859',
+              'retro-dark': '#2D2D2D',
+              'retro-border': '#2D2D2D', // Dark borders for high contrast
+              'retro-bg': '#E5E0DA',
+            },
+            fontFamily: {
+              sans: ['"DM Sans"', 'sans-serif'],
+              serif: ['"DM Serif Display"', 'serif'],
+            },
+            boxShadow: {
+              'retro': '4px 4px 0px 0px #2D2D2D',
+              'retro-hover': '6px 6px 0px 0px #2D2D2D',
+              'retro-sm': '2px 2px 0px 0px #2D2D2D',
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      body { font-family: 'DM Sans', sans-serif; background-color: #F9F5F1; color: #2D2D2D; }
+      
+      /* Retro Scrollbar */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent; 
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #2D2D2D; 
+        border-radius: 4px;
+        border: 2px solid #F9F5F1;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #C84C4C; 
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@18.3.1",
+    "react/": "https://esm.sh/react@18.3.1/",
+    "react-dom": "https://esm.sh/react-dom@18.3.1",
+    "react-dom/": "https://esm.sh/react-dom@18.3.1/",
+    "lucide-react": "https://esm.sh/lucide-react@0.468.0?external=react,react-dom",
+    "qrcode.react": "https://esm.sh/qrcode.react@4.2.0?external=react,react-dom",
+    "framer-motion": "https://esm.sh/framer-motion@11.0.8?external=react,react-dom"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body class="antialiased overflow-x-hidden selection:bg-retro-red selection:text-white">
+    <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>
