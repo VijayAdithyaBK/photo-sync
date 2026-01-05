@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { HistoryItem } from '../types';
 import { Send, Check, AlertCircle, Loader2, Plus, X, Link, Scan, Pause, File as FileIcon } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import jsQR from 'jsqr';
+import { Html5Qrcode } from "html5-qrcode";
 import { Peer } from 'peerjs';
 
 const Sender: React.FC = () => {
@@ -22,8 +22,7 @@ const Sender: React.FC = () => {
     const peerRef = useRef<any>(null);
     const connRef = useRef<any>(null);
     const cancelRef = useRef(false);
-    const videoRef = useRef<HTMLVideoElement>(null);
-    const canvasRef = useRef<HTMLCanvasElement>(null);
+    const scannerRef = useRef<Html5Qrcode | null>(null);
 
     // Initialize Peer
     useEffect(() => {
@@ -41,48 +40,45 @@ const Sender: React.FC = () => {
         return () => items.forEach(item => URL.revokeObjectURL(item.preview));
     }, []);
 
-    // QR Scanning
+    // QR Scanning with html5-qrcode
     useEffect(() => {
-        let stream: MediaStream | null = null;
-        let animationFrameId: number;
+        if (isScanning) {
+            // Short timeout to ensure DOM is ready
+            const timer = setTimeout(() => {
+                const html5QrCode = new Html5Qrcode("reader");
+                scannerRef.current = html5QrCode;
 
-        const startScanning = async () => {
-            if (!isScanning) return;
-            try {
-                stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
-                if (videoRef.current) {
-                    videoRef.current.srcObject = stream as any;
-                    videoRef.current.onloadedmetadata = () => {
-                        videoRef.current?.play().catch(console.error);
-                        requestAnimationFrame(tick);
-                    };
+                const config = { fps: 10, qrbox: { width: 250, height: 250 } };
+
+                html5QrCode.start(
+                    { facingMode: "environment" },
+                    config,
+                    (decodedText) => {
+                        console.log("QR Code detected:", decodedText);
+                        setTargetId(decodedText);
+                        setIsScanning(false);
+                        html5QrCode.stop().then(() => html5QrCode.clear()).catch(console.error);
+                    },
+                    (errorMessage) => {
+                        // ignore errors during scanning
+                    }
+                ).catch(err => {
+                    console.error("Error starting scanner:", err);
+                    setError("Camera failed: " + err);
+                    setIsScanning(false);
+                });
+            }, 100);
+
+            return () => {
+                clearTimeout(timer);
+                if (scannerRef.current) {
+                    try {
+                        scannerRef.current.stop().then(() => scannerRef.current?.clear()).catch(() => { });
+                    } catch (e) { /* ignore */ }
+                    scannerRef.current = null;
                 }
-            } catch (err) { setError("Camera denied"); setIsScanning(false); }
-        };
-
-        const tick = () => {
-            if (!videoRef.current || !canvasRef.current || !isScanning) return;
-            if (videoRef.current.readyState === videoRef.current.HAVE_ENOUGH_DATA) {
-                const canvas = canvasRef.current;
-                const video = videoRef.current;
-                canvas.width = video.videoWidth;
-                canvas.height = video.videoHeight;
-                const ctx = canvas.getContext('2d');
-                if (ctx) {
-                    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-                    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-                    const code = jsQR(imageData.data, imageData.width, imageData.height, { inversionAttempts: "attemptBoth" });
-                    if (code) { setTargetId(code.data); setIsScanning(false); }
-                }
-            }
-            animationFrameId = requestAnimationFrame(tick);
-        };
-
-        if (isScanning) startScanning();
-        return () => {
-            if (stream) stream.getTracks().forEach(t => t.stop());
-            cancelAnimationFrame(animationFrameId);
-        };
+            };
+        }
     }, [isScanning]);
 
     const connectToPc = () => {
@@ -208,10 +204,10 @@ const Sender: React.FC = () => {
             <AnimatePresence>
                 {isScanning && (
                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 z-50 bg-retro-dark/95 flex flex-col items-center justify-center p-6">
-                        <div className="w-full max-w-xs aspect-square border-4 border-white rounded-3xl overflow-hidden relative shadow-2xl">
-                            <video ref={videoRef} className="w-full h-full object-cover" autoPlay muted playsInline />
+                        <div className="w-full max-w-xs aspect-square border-4 border-white rounded-3xl overflow-hidden relative shadow-2xl bg-black">
+                            <div id="reader" className="w-full h-full"></div>
                         </div>
-                        <button onClick={() => setIsScanning(false)} className="mt-8 bg-white text-retro-dark px-8 py-3 rounded-full font-bold border-2 border-transparent hover:border-retro-red">Close Camera</button>
+                        <button onClick={() => { setIsScanning(false); if (scannerRef.current) scannerRef.current.stop().then(() => scannerRef.current?.clear()); }} className="mt-8 bg-white text-retro-dark px-8 py-3 rounded-full font-bold border-2 border-transparent hover:border-retro-red">Close Camera</button>
                     </motion.div>
                 )}
             </AnimatePresence>
