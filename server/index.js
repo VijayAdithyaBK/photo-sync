@@ -1,6 +1,9 @@
 const express = require('express');
 const { ExpressPeerServer } = require('peer');
 const app = express();
+const cors = require('cors');
+
+app.use(cors());
 
 const port = process.env.PORT || 9000;
 

@@ -15,8 +15,9 @@ const Receiver: React.FC = () => {
 
     useEffect(() => {
         const peer = new Peer(undefined, {
+            host: 'photo-sync-2at6.onrender.com',
+            secure: true,
             path: '/peerjs/myapp',
-            secure: location.protocol === 'https:',
             debug: 2
         });
         peer.on('open', (id: string) => { setPeerId(id); setStatus('Ready'); });
