@@ -205,6 +205,10 @@ const Sender: React.FC = () => {
                 {isScanning && (
                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 z-50 bg-retro-dark/95 flex flex-col items-center justify-center p-6">
                         <div className="w-full max-w-xs aspect-square border-4 border-white rounded-3xl overflow-hidden relative shadow-2xl bg-black">
+                            <style>{`
+                                #reader video { object-fit: cover; width: 100% !important; height: 100% !important; border-radius: 1.5rem; }
+                                #reader { width: 100% !important; height: 100% !important; border: none !important; }
+                            `}</style>
                             <div id="reader" className="w-full h-full"></div>
                         </div>
                         <button onClick={() => { setIsScanning(false); if (scannerRef.current) scannerRef.current.stop().then(() => scannerRef.current?.clear()); }} className="mt-8 bg-white text-retro-dark px-8 py-3 rounded-full font-bold border-2 border-transparent hover:border-retro-red">Close Camera</button>
