@@ -26,7 +26,12 @@ const Sender: React.FC = () => {
 
     // Initialize Peer
     useEffect(() => {
-        const peer = new Peer(undefined, { debug: 2 });
+        const peer = new Peer(undefined, {
+            host: 'photo-sync-2at6.onrender.com',
+            secure: true,
+            path: '/peerjs/myapp',
+            debug: 2
+        });
         peer.on('open', (id: string) => console.log('ID:', id));
         peer.on('error', (err: any) => {
             setIsConnected(false); setIsSending(false); setError('Connection failed');
