@@ -1,0 +1,15 @@
+{
+    "name": "photo-sync-server",
+    "version": "1.0.0",
+    "description": "Custom PeerJS server for PhotoSync",
+    "main": "index.js",
+    "scripts": {
+        "start": "node index.js"
+    },
+    "dependencies": {
+        "peer": "^1.0.0"
+    },
+    "engines": {
+        "node": ">=14"
+    }
+}
