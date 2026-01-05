@@ -1,14 +1,21 @@
-const { PeerServer } = require('peer');
+const express = require('express');
+const { ExpressPeerServer } = require('peer');
+const app = express();
 
 const port = process.env.PORT || 9000;
 
-console.log(`Starting PeerJS server on port ${port}...`);
-
-const peerServer = PeerServer({
-    port: port,
-    path: '/myapp',
-    allow_discovery: true,
-    proxied: true // Important for Render/Heroku/behind Nginx
+const server = app.listen(port, () => {
+    console.log(`Server running on port ${port}`);
 });
 
-console.log('PeerJS server started!');
+const peerServer = ExpressPeerServer(server, {
+    debug: true,
+    path: '/myapp',
+    allow_discovery: true
+});
+
+app.use('/peerjs', peerServer);
+
+app.get('/', (req, res) => {
+    res.send('PhotoSync Relay Server is Running! 🚀');
+});
