@@ -14,8 +14,14 @@ const peerServer = ExpressPeerServer(server, {
     allow_discovery: true
 });
 
+const path = require('path');
+
 app.use('/peerjs', peerServer);
 
-app.get('/', (req, res) => {
-    res.send('PhotoSync Relay Server is Running! 🚀');
+// Serve static files from the React app build directory
+app.use(express.static(path.join(__dirname, '..', 'dist')));
+
+// SPA Fallback: Serve index.html for any other route
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'dist', 'index.html'));
 });
