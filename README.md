@@ -62,14 +62,14 @@ This project is built with **React**, **Vite**, and **TypeScript**, designed to 
 
 ---
 
-### 💼 Open to Opportunities
+### 🎞️ Ready to Focus on New Adventures! 🌈
 
-**Data Engineer** | 4+ years in production data platforms
+I'm a **Data Engineer** with 4+ years of experience, ready to **snap** into a new role and **sync** up with an amazing team! I love building platforms that make data flow as effortlessly as your favorite memories. 🪄
 
-📧 [vijayadithyabk@gmail.com](mailto:vijayadithyabk@gmail.com) | 🔗 [LinkedIn](https://www.linkedin.com/in/vijayadithyabk/) | 💻 [GitHub](https://github.com/VijayAdithyaBK)
+💌 [Send a Digital Postcard](mailto:vijayadithyabk@gmail.com) • 🤝 [Let's Sync Up](https://www.linkedin.com/in/vijayadithyabk/) • 💻 [Explore the Gallery](https://github.com/VijayAdithyaBK)
 
 ---
 
-*⚡ Crafted by Vijay Adithya B K*
+*✨ Developed with sunshine by Vijay Adithya B K ✨*
 
 </div>
