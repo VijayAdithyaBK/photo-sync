@@ -8,7 +8,7 @@ Imagine transferring photos **without cables**, **without cloud uploads**, and *
 
 <br />
 
-![PhotoSync Vibes](https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3Z5bnZ5bnZ5bnZ5bnZ5bnZ5bnZ5bnZ5bnZ5bnZ5bnZ5bSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Ld1Zc9Wd3sP2/giphy.gif)
+![PhotoSync Vibes](https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMXN4cjgwZnlmeHczdjRxbHFvMGI5b2xhMDBkaXV1dW00cHpqdnJ0eSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/gZEBpuOkPuydi/giphy.gif)
 
 </div>
 
@@ -55,5 +55,21 @@ npm run dev
 This project is built with **React**, **Vite**, and **TypeScript**, designed to bring a little spot of sunshine to your workflow. ☀️
 
 **Enjoy sharing! 💖**
+
+<br />
+
+**⭐ If you find this project interesting, please consider giving it a star! ⭐**
+
+---
+
+### 💼 Open to Opportunities
+
+**Data Engineer** | 4+ years in production data platforms
+
+📧 [vijayadithyabk@gmail.com](mailto:vijayadithyabk@gmail.com) | 🔗 [LinkedIn](https://www.linkedin.com/in/vijayadithyabk/) | 💻 [GitHub](https://github.com/VijayAdithyaBK)
+
+---
+
+*⚡ Crafted by Vijay Adithya B K*
 
 </div>
