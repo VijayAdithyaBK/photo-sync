@@ -31,7 +31,10 @@ const Sender: React.FC = () => {
             config: {
                 iceServers: [
                     { urls: 'stun:stun.l.google.com:19302' },
-                    { urls: 'stun:stun1.l.google.com:19302' }
+                    { urls: 'stun:stun1.l.google.com:19302' },
+                    { urls: 'stun:stun2.l.google.com:19302' },
+                    { urls: 'stun:stun3.l.google.com:19302' },
+                    { urls: 'stun:stun4.l.google.com:19302' }
                 ]
             }
         });
@@ -98,14 +101,25 @@ const Sender: React.FC = () => {
         const timeout = setTimeout(() => {
             if (!connRef.current?.open) {
                 console.error("Connection timed out");
-                setError("Connection Timed Out. Firewalls?");
+                setError("Timed Out. Try switching to 4G/different WiFi?");
                 setStatus('Disconnected');
                 setIsConnected(false);
             }
-        }, 5000);
+        }, 15000);
 
         try {
-            const conn = peerRef.current.connect(targetId.trim(), { reliable: true });
+            const conn = peerRef.current.connect(targetId.trim()); // Default options
+
+            // Monitor ICE State for debugging
+            if (conn.peerConnection) {
+                conn.peerConnection.oniceconnectionstatechange = () => {
+                    console.log("ICE State:", conn.peerConnection.iceConnectionState);
+                    if (conn.peerConnection.iceConnectionState === 'failed') {
+                        setError("Network Error: NAT Traversal Failed");
+                    }
+                };
+            }
+
             conn.on('open', () => {
                 clearTimeout(timeout);
                 console.log("Connection opened to " + targetId);
