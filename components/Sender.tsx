@@ -26,7 +26,7 @@ const Sender: React.FC = () => {
 
     // Initialize Peer
     useEffect(() => {
-        const peer = new Peer(undefined, { debug: 2 });
+        const peer = new Peer(undefined, { debug: 3 });
         peer.on('open', (id: string) => console.log('ID:', id));
         peer.on('error', (err: any) => {
             setIsConnected(false); setIsSending(false); setError('Connection failed');
@@ -82,14 +82,15 @@ const Sender: React.FC = () => {
     }, [isScanning]);
 
     const connectToPc = () => {
+        console.log("Attempting to connect to:", targetId);
         if (!peerRef.current || !targetId) return;
         setStatus('Linking...');
         try {
             const conn = peerRef.current.connect(targetId.trim(), { reliable: true });
-            conn.on('open', () => { setIsConnected(true); setStatus('Linked'); connRef.current = conn; });
-            conn.on('close', () => { setIsConnected(false); connRef.current = null; setStatus('Disconnected'); setIsSending(false); });
-            conn.on('error', () => { setIsConnected(false); setError("Failed"); });
-        } catch (err: any) { setError(err.message); }
+            conn.on('open', () => { console.log("Connection opened to " + targetId); setIsConnected(true); setStatus('Linked'); connRef.current = conn; });
+            conn.on('close', () => { console.log("Connection closed"); setIsConnected(false); connRef.current = null; setStatus('Disconnected'); setIsSending(false); });
+            conn.on('error', (err: any) => { console.error("Connection error:", err); setIsConnected(false); setError("Failed: " + err); });
+        } catch (err: any) { console.error("Peer connect error:", err); setError(err.message); }
     };
 
     const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {

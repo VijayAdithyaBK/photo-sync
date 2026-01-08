@@ -14,8 +14,8 @@ const Receiver: React.FC = () => {
     const peerRef = useRef<any>(null);
 
     useEffect(() => {
-        const peer = new Peer(undefined, { debug: 2 });
-        peer.on('open', (id: string) => { setPeerId(id); setStatus('Ready'); });
+        const peer = new Peer(undefined, { debug: 3 });
+        peer.on('open', (id: string) => { console.log("My Peer ID:", id); setPeerId(id); setStatus('Ready'); });
         peer.on('connection', (conn: any) => {
             setStatus('Connected');
             let incomingMeta: any = null;
