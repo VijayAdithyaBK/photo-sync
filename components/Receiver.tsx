@@ -14,7 +14,15 @@ const Receiver: React.FC = () => {
     const peerRef = useRef<any>(null);
 
     useEffect(() => {
-        const peer = new Peer(undefined, { debug: 3 });
+        const peer = new Peer(undefined, {
+            debug: 2,
+            config: {
+                iceServers: [
+                    { urls: 'stun:stun.l.google.com:19302' },
+                    { urls: 'stun:stun1.l.google.com:19302' }
+                ]
+            }
+        });
         peer.on('open', (id: string) => { console.log("My Peer ID:", id); setPeerId(id); setStatus('Ready'); });
         peer.on('connection', (conn: any) => {
             setStatus('Connected');

@@ -26,7 +26,15 @@ const Sender: React.FC = () => {
 
     // Initialize Peer
     useEffect(() => {
-        const peer = new Peer(undefined, { debug: 3 });
+        const peer = new Peer(undefined, {
+            debug: 2,
+            config: {
+                iceServers: [
+                    { urls: 'stun:stun.l.google.com:19302' },
+                    { urls: 'stun:stun1.l.google.com:19302' }
+                ]
+            }
+        });
         peer.on('open', (id: string) => console.log('ID:', id));
         peer.on('error', (err: any) => {
             setIsConnected(false); setIsSending(false); setError('Connection failed');
@@ -199,6 +207,7 @@ const Sender: React.FC = () => {
                     )}
                 </div>
                 {error && <div className="mt-2 text-xs font-bold text-retro-red bg-white border border-retro-red px-2 py-1 inline-block rounded-md">{error}</div>}
+                {!isConnected && !error && <div className="mt-2 text-[10px] text-gray-500 font-bold uppercase tracking-wider text-center">⚠️ Ensure both devices are on the Same WiFi</div>}
             </div>
 
             {/* QR Scanner */}
