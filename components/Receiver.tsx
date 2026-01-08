@@ -25,7 +25,16 @@ const Receiver: React.FC = () => {
         });
         peer.on('open', (id: string) => { console.log("My Peer ID:", id); setPeerId(id); setStatus('Ready'); });
         peer.on('connection', (conn: any) => {
-            setStatus('Connected');
+            console.log("Receiver: Handshake received from", conn.peer);
+
+            const handleOpen = () => {
+                console.log("Receiver: Connection fully OPEN");
+                setStatus('Connected');
+            };
+
+            if (conn.open) handleOpen();
+            else conn.on('open', handleOpen);
+
             let incomingMeta: any = null;
             let receivedChunks: BlobPart[] = [];
             conn.on('data', (data: any) => {

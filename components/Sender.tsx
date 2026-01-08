@@ -93,12 +93,29 @@ const Sender: React.FC = () => {
         console.log("Attempting to connect to:", targetId);
         if (!peerRef.current || !targetId) return;
         setStatus('Linking...');
+
+        // Timeout safety
+        const timeout = setTimeout(() => {
+            if (!connRef.current?.open) {
+                console.error("Connection timed out");
+                setError("Connection Timed Out. Firewalls?");
+                setStatus('Disconnected');
+                setIsConnected(false);
+            }
+        }, 5000);
+
         try {
             const conn = peerRef.current.connect(targetId.trim(), { reliable: true });
-            conn.on('open', () => { console.log("Connection opened to " + targetId); setIsConnected(true); setStatus('Linked'); connRef.current = conn; });
+            conn.on('open', () => {
+                clearTimeout(timeout);
+                console.log("Connection opened to " + targetId);
+                setIsConnected(true);
+                setStatus('Linked');
+                connRef.current = conn;
+            });
             conn.on('close', () => { console.log("Connection closed"); setIsConnected(false); connRef.current = null; setStatus('Disconnected'); setIsSending(false); });
-            conn.on('error', (err: any) => { console.error("Connection error:", err); setIsConnected(false); setError("Failed: " + err); });
-        } catch (err: any) { console.error("Peer connect error:", err); setError(err.message); }
+            conn.on('error', (err: any) => { clearTimeout(timeout); console.error("Connection error:", err); setIsConnected(false); setError("Failed: " + err); });
+        } catch (err: any) { clearTimeout(timeout); console.error("Peer connect error:", err); setError(err.message); }
     };
 
     const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
